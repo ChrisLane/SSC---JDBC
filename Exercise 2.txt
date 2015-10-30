@@ -1,0 +1,124 @@
+Part 1.1
+=====================
+Student:
+    Primary key - studentID
+    Foreign key - titleID
+    Not null - titleID, forename, dateOfBirth
+    Check (dateOfBirth < current date), (dateOfBirth > '1900-01-01')
+    
+Lecturer:
+    Primary key - lecturerID
+    Foreign key - titleID
+    Not null - titleID, forename
+    
+StudentRegistration:
+    Foreign key - studentID, registrationTypeID
+    Not null - studentID, yearOfStudy, registrationTypeID
+    Check yearOfStudy > 0
+    Unique - studentID
+    
+StudentContact:
+    Foreign key - studentID
+    Not null - eMailAddress, postalAddress
+    
+NextOfKinContact:
+    Foreign key - studentID
+    not null - name, postalAddress
+    
+LecturerContact:
+    Foreign key - lecturerID
+    not null - office, eMailAddress
+    Unique - lecturerID
+    
+Tutor:
+    Foreign key - studentID, lecturerID
+    
+Titles:
+    Primary key - titleID
+    Not null - titleString
+    Unique - titleString
+    
+RegistrationType:
+    Primary key - registrationTypeID
+    Not null - description
+    Unique - description
+
+    
+    
+    
+
+Part 2.1
+==================
+CREATE TABLE Student (
+    studentID INT PRIMARY KEY,
+    titleID INT NOT NULL,
+    foreName CHAR(20) NOT NULL,
+    familyName CHAR(20),
+    dateOfBirth DATE NOT NULL,
+
+    FOREIGN KEY (titleID) REFERENCES Titles(titleID),
+    CHECK (dateOfBirth < current_date),
+    CHECK (dateOfBirth > '1900-01-01')
+);
+
+CREATE TABLE Lecturer (
+    lecturerID INT PRIMARY KEY,
+    titleID INT NOT NULL,
+    foreName CHAR(20) NOT NULL,
+    familyName CHAR(20),
+
+    FOREIGN KEY (titleID) REFERENCES Titles(titleID)
+);
+
+CREATE TABLE StudentRegistration (
+    studentID INT NOT NULL UNIQUE,
+    yearOfStudy INT NOT NULL,
+    registrationTypeID INT NOT NULL,
+
+    FOREIGN KEY (studentID) REFERENCES Student(studentID),
+    FOREIGN KEY (registrationTypeID) REFERENCES RegistrationType(registrationTypeID),
+    CHECK (yearOfStudy > 0)
+);
+
+CREATE TABLE StudentContact (
+    studentID INT,
+    eMailAddress CHAR(30) NOT NULL,
+    postalAddress CHAR(40) NOT NULL,
+
+    FOREIGN KEY (studentID) REFERENCES Student(studentID)
+);
+
+CREATE TABLE NextOfKinContact (
+    studentID INT,
+    name CHAR(20) NOT NULL,
+    eMailAddress CHAR(30),
+    postalAddress CHAR(40) NOT NULL,
+
+    FOREIGN KEY (studentID) REFERENCES Student(studentID)
+);
+
+CREATE TABLE LecturerContact (
+    lecturerID INT UNIQUE,
+    office CHAR(5) NOT NULL,
+    eMailAddress CHAR(30) NOT NULL,
+
+    FOREIGN KEY (lecturerID) REFERENCES Lecturer(lecturerID)
+);
+
+CREATE TABLE Tutor (
+    studentID INT,
+    lecturerID INT,
+
+    FOREIGN KEY (studentID) REFERENCES Student(studentID),
+    FOREIGN KEY (lecturerID) REFERENCES Lecturer(lecturerID)
+);
+
+CREATE TABLE Titles (
+    titleID INT PRIMARY KEY,
+    titleString CHAR(10) UNIQUE NOT NULL
+);
+
+CREATE TABLE RegistrationType (
+    registrationTypeID INT PRIMARY KEY,
+    description CHAR(10) UNIQUE NOT NULL
+);
