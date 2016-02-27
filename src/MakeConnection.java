@@ -3,9 +3,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MakeConnection {
-    private String url = "jdbc:postgresql://dbteach2.cs.bham.ac.uk/cml476";
-    private String username = "cml476";
-    private String pass = "postpass1";
+    private String url = "jdbc:postgresql://dbteach2.cs.bham.ac.uk/######";
+    private String username = "#######";
+    private String pass = "$$$$$$$";
     private Connection connection = null;
 
     public MakeConnection() {
